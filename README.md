@@ -32,7 +32,7 @@ If you'd like to build the application yourself, you'll need to set up the Tauri
 
 1.  **Clone the repository:**
     ```bash
-    git clone [https://github.com/vivin/google-messages-desktop.git](https://github.com/vivin/google-messages-desktop.git)
+    git clone https://github.com/vivin/google-messages-desktop.git
     cd google-messages-desktop
     ```
 
