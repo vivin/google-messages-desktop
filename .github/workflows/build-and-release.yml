@@ -52,7 +52,7 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           files: |
-            artifacts/macos-latest-build/*.dmg
-            artifacts/windows-latest-build/*.msi
-            artifacts/ubuntu-latest-build/*.deb
-            artifacts/ubuntu-latest-build/*.AppImage
+            artifacts/**/*.dmg
+            artifacts/**/*.msi
+            artifacts/**/*.deb
+            artifacts/**/*.AppImage
