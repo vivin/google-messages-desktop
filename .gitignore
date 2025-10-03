@@ -1,0 +1,38 @@
+# Node.js
+/node_modules
+.npm
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+.pnpm-store
+
+# Tauri / Rust
+/src-tauri/gen
+/src-tauri/target
+/src-tauri/Cargo.lock
+# You may want to commit Cargo.lock to lock dependencies.
+# If you want to commit it, remove the line above.
+
+# Build artifacts
+/dist
+/dist-ssr
+*.tsbuildinfo
+.vite-ssg-temp
+.nuxt
+.output
+.vitepress/cache
+.vitepress/dist
+
+# OS-specific
+.DS_Store
+Thumbs.db
+
+# IDE / Editor
+.vscode
+.idea
+
+# Environment variables
+.env
+.env*.local
