@@ -12,7 +12,7 @@ A simple, lightweight, unofficial desktop wrapper for Google Messages, built wit
 
 ## Installation
 
-You can download the latest version for your operating system from the [Releases](https://github.com/yvivin/google-messages-desktop/releases) page.
+You can download the latest version for your operating system from the [Releases](https://github.com/vivin/google-messages-desktop/releases) page.
 
 * **macOS**: Download the `.dmg` file. Open it and drag the app to your Applications folder.
 * **Windows**: Download the `.msi` file and run the installer.
