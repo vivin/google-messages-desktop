@@ -32,23 +32,11 @@ jobs:
       - name: Install dependencies and build
         run: npm install && npm run tauri build
 
-      - name: Prepare release assets
-        run: |
-          if [ "${{ runner.os }}" = "macOS" ]; then
-            mv src-tauri/target/release/bundle/macos/*.dmg src-tauri/target/release/bundle/macos/google-messages-desktop.dmg
-          elif [ "${{ runner.os }}" = "Windows" ]; then
-            mv src-tauri/target/release/bundle/msi/*.msi src-tauri/target/release/bundle/msi/google-messages-desktop-setup.msi
-          elif [ "${{ runner.os }}" = "Linux" ]; then
-            mv src-tauri/target/release/bundle/deb/*.deb src-tauri/target/release/bundle/deb/google-messages-desktop.deb
-            mv src-tauri/target/release/bundle/appimage/*.AppImage src-tauri/target/release/bundle/appimage/google-messages-desktop.AppImage
-          fi
-        shell: bash
-
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4
         with:
           name: ${{ matrix.platform }}-build
-          path: src-tauri/target/release/bundle/**/google-messages-desktop*
+          path: src-tauri/target/release/bundle/**/Google*
 
   release:
     needs: build
