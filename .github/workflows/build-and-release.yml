@@ -1,0 +1,70 @@
+name: Build and Release
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        platform: [macos-latest, windows-latest, ubuntu-latest]
+
+    runs-on: ${{ matrix.platform }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Install dependencies (Linux)
+        if: matrix.platform == 'ubuntu-latest'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libgtk-3-dev libwebkit2gtk-4.0-dev libappindicator3-dev librsvg2-dev patchelf
+
+      - name: Install dependencies and build
+        run: npm install && npm run tauri build
+
+      - name: Prepare release assets
+        run: |
+          if [ "${{ runner.os }}" = "macOS" ]; then
+            mv src-tauri/target/release/bundle/macos/*.dmg src-tauri/target/release/bundle/macos/google-messages-desktop.dmg
+          elif [ "${{ runner.os }}" = "Windows" ]; then
+            mv src-tauri/target/release/bundle/msi/*.msi src-tauri/target/release/bundle/msi/google-messages-desktop-setup.msi
+          elif [ "${{ runner.os }}" = "Linux" ]; then
+            mv src-tauri/target/release/bundle/deb/*.deb src-tauri/target/release/bundle/deb/google-messages-desktop.deb
+            mv src-tauri/target/release/bundle/appimage/*.AppImage src-tauri/target/release/bundle/appimage/google-messages-desktop.AppImage
+          fi
+        shell: bash
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.platform }}-build
+          path: src-tauri/target/release/bundle/**/google-messages-desktop*
+
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: artifacts/
+      
+      - name: Upload assets to release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            artifacts/macos-latest-build/*.dmg
+            artifacts/windows-latest-build/*.msi
+            artifacts/ubuntu-latest-build/*.deb
+            artifacts/ubuntu-latest-build/*.AppImage
