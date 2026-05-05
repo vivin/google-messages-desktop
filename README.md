@@ -14,9 +14,26 @@ A simple, lightweight, unofficial desktop wrapper for Google Messages, built wit
 
 You can download the latest version for your operating system from the [Releases](https://github.com/vivin/google-messages-desktop/releases) page.
 
-* **macOS**: Download the `.dmg` file. Open it and drag the app to your Applications folder.
-* **Windows**: Download the `.msi` file and run the installer.
+* **macOS**: Download the `.dmg` file. Open it and drag the app to your Applications folder. **First-time launch:** see the macOS section below — the app isn't codesigned, so macOS will refuse to open it the first time with a misleading "damaged" message.
+* **Windows**: Download the `.msi` file and run the installer. SmartScreen may show an "unrecognized app" warning the first time; click "More info" → "Run anyway."
 * **Linux**: For Debian, Ubuntu, or derived distros use the `.deb` file. Otherwise use the `.AppImage` file (which will work on any Linux distro).
+
+### macOS: "App is damaged" on first launch
+
+The app isn't signed with an Apple Developer ID (that requires a paid Apple account), so on first launch macOS will say *"Google Messages Desktop is damaged and can't be opened."* The app isn't actually damaged — that's macOS's stock message for any app it doesn't recognize. You only need to do this once; after the first successful open, macOS remembers it.
+
+**Option 1 — System Settings (no terminal):**
+1. Drag the app into your Applications folder.
+2. Double-click it. You'll get the "damaged" warning. Click **Cancel**.
+3. Open **System Settings → Privacy & Security**. Scroll down to the *Security* section.
+4. You'll see a line about *"Google Messages Desktop was blocked from use because it is not from an identified developer."* Click **Open Anyway**.
+5. Authenticate, then click **Open** in the confirmation dialog. The app launches.
+
+**Option 2 — Terminal (one command):**
+```bash
+xattr -dr com.apple.quarantine "/Applications/Google Messages Desktop.app"
+```
+After running it, double-click the app normally.
 
 ## Building from Source
 
