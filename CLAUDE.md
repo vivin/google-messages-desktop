@@ -34,7 +34,7 @@ There is no test suite and no linter. `tsc` (via `npm run build`) and `cargo che
 
 `.github/workflows/build-and-release.yml` triggers on GitHub release **publish** (not push). It builds on macOS, Windows, and Ubuntu runners in parallel, then a follow-up `release` job attaches the `.dmg`, `.msi`, `.deb`, and `.AppImage` artifacts using `RELEASE_ACCESS_TOKEN`. The Linux runner needs `libgtk-3-dev`, `libwebkit2gtk-4.1-dev`, `libappindicator3-dev`, `librsvg2-dev`, `patchelf` — installed inline in the workflow.
 
-Bumping the app version requires editing **all three** of `package.json`, `src-tauri/tauri.conf.json`, and `src-tauri/Cargo.toml` — Tauri does not derive any of them from another.
+The release workflow rewrites the version in `package.json`, `src-tauri/tauri.conf.json`, and `src-tauri/Cargo.toml` from `github.event.release.tag_name` (stripping a leading `v`) before building, so the three source files can stay out of date — the published artifact filenames will match the release tag. If you want a local `tauri build` to produce a specific filename, you still need to edit all three files yourself; Tauri does not derive any of them from another.
 
 ## Capabilities & permissions
 

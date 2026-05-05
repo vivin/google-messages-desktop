@@ -29,6 +29,25 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y libgtk-3-dev libwebkit2gtk-4.1-dev libappindicator3-dev librsvg2-dev patchelf
 
+      - name: Set version from release tag
+        shell: bash
+        run: |
+          VERSION="${{ github.event.release.tag_name }}"
+          VERSION="${VERSION#v}"
+          echo "Setting version to $VERSION"
+          node -e "
+            const fs = require('fs');
+            const v = '$VERSION';
+            const pkg = JSON.parse(fs.readFileSync('package.json'));
+            pkg.version = v;
+            fs.writeFileSync('package.json', JSON.stringify(pkg, null, 2) + '\n');
+            const tc = JSON.parse(fs.readFileSync('src-tauri/tauri.conf.json'));
+            tc.version = v;
+            fs.writeFileSync('src-tauri/tauri.conf.json', JSON.stringify(tc, null, 2) + '\n');
+            const cargo = fs.readFileSync('src-tauri/Cargo.toml', 'utf8');
+            fs.writeFileSync('src-tauri/Cargo.toml', cargo.replace(/^version = \".*\"/m, 'version = \"' + v + '\"'));
+          "
+
       - name: Install dependencies and build
         run: npm install && npm run tauri build
 
